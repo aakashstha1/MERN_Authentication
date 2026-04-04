@@ -72,7 +72,10 @@ export const useAuthStore = create((set) => ({
   googleAuth: async (token) => {
     set({ isOAuthLoading: true, error: null });
     try {
+      // Send token to backend for verification
       const { data } = await api.post("/OAuth", { token });
+
+      // Update store with user info and auth status
       set({
         user: data.user,
         isAuthenticated: true,

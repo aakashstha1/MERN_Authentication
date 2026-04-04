@@ -244,42 +244,48 @@ export const checkAuth = async (req, res) => {
 };
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
 export const googleAuth = async (req, res) => {
   try {
+    // Get the token from the request body
     const { token } = req.body;
 
+    // If no token is provided, return an error
     if (!token) {
       return res.status(400).json({ success: false, message: "Missing token" });
     }
 
     // Verify the token with Google
     const ticket = await client.verifyIdToken({
-      idToken: token,
-      audience: process.env.GOOGLE_CLIENT_ID,
+      idToken: token, // The ID token received from frontend
+      audience: process.env.GOOGLE_CLIENT_ID, // Verify it matches our client ID
     });
 
+    // Extract user info from the verified token
     const payload = ticket.getPayload();
     const { sub: googleId, email, name } = payload;
 
+    // If essential info is missing, return an error
     if (!email || !name) {
       return res
         .status(400)
         .json({ success: false, message: "Invalid token payload" });
     }
 
-    // Check if user exists
+    // Check if a user with this email already exists
     let user = await User.findOne({ email });
 
     if (!user) {
+      // If user doesn't exist, create a new one
       user = await User.create({
         email,
         name,
         googleId,
         isVerified: true,
-        isOAuth: true, // ✅ add this
+        isOAuth: true, // marks that this account uses Google OAuth
       });
     } else {
-      // link Google to existing email/password account
+      // If user exists but doesn't have Google linked, update it
       if (!user.googleId) {
         user.googleId = googleId;
         user.isOAuth = true;
@@ -288,20 +294,24 @@ export const googleAuth = async (req, res) => {
       }
     }
 
-    // Generate JWT token and set it in HTTP-only cookie
+    // Generate a JWT token and set it in an HTTP-only cookie
     generateTokenAndSetCookie(res, user._id);
-    user.lastLogin = new Date(); // ✅ add this
+
+    // Update the user's last login time
+    user.lastLogin = new Date();
     await user.save();
 
+    // Respond with success and user info (hide password)
     res.json({
       success: true,
       message: "Logged in successfully",
       user: {
         ...user._doc,
-        password: undefined,
+        password: undefined, // remove password from response
       },
     });
   } catch (error) {
+    // Log error and return failure response
     console.error("Error in googleAuth:", error);
     res.status(400).json({ success: false, message: error.message });
   }
