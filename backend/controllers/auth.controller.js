@@ -7,6 +7,7 @@ import {
 } from "../mailtrap/emails.js";
 import { User } from "../models/user.model.js";
 import { validatePassword } from "../utils/passwordValidator.js";
+import { OAuth2Client } from "google-auth-library";
 
 // ---------------------------------------------------------- Signup -----------------------------------------------
 export const signup = async (req, res) => {
@@ -238,6 +239,70 @@ export const checkAuth = async (req, res) => {
     res.status(200).json({ success: true, user });
   } catch (error) {
     console.log("Error in checkAuth ", error);
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+export const googleAuth = async (req, res) => {
+  try {
+    const { token } = req.body;
+
+    if (!token) {
+      return res.status(400).json({ success: false, message: "Missing token" });
+    }
+
+    // Verify the token with Google
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    const { sub: googleId, email, name } = payload;
+
+    if (!email || !name) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid token payload" });
+    }
+
+    // Check if user exists
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      user = await User.create({
+        email,
+        name,
+        googleId,
+        isVerified: true,
+        isOAuth: true, // ✅ add this
+      });
+    } else {
+      // link Google to existing email/password account
+      if (!user.googleId) {
+        user.googleId = googleId;
+        user.isOAuth = true;
+        user.isVerified = true;
+        await user.save();
+      }
+    }
+
+    // Generate JWT token and set it in HTTP-only cookie
+    generateTokenAndSetCookie(res, user._id);
+    user.lastLogin = new Date(); // ✅ add this
+    await user.save();
+
+    res.json({
+      success: true,
+      message: "Logged in successfully",
+      user: {
+        ...user._doc,
+        password: undefined,
+      },
+    });
+  } catch (error) {
+    console.error("Error in googleAuth:", error);
     res.status(400).json({ success: false, message: error.message });
   }
 };

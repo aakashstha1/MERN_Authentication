@@ -19,6 +19,11 @@ app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(express.json()); // allows us to parse incoming requests:req.body
 app.use(cookieParser()); // allows us to parse incoming cookies
 
+app.use((req, res, next) => {
+  res.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
+  next();
+});
+
 app.use("/api/auth", authRoutes);
 
 if (process.env.NODE_ENV === "production") {

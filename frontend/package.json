@@ -11,8 +11,9 @@
   },
   "dependencies": {
     "@ariajdev/company-colored-icon": "^1.0.1",
+    "@react-oauth/google": "^0.13.4",
     "auth-tutorial": "file:..",
-    "axios": "^1.7.3",
+    "axios": "^1.9.0",
     "framer-motion": "^11.3.21",
     "lucide-react": "^0.424.0",
     "mern-auth": "file:..",
@@ -35,6 +36,6 @@
     "eslint-plugin-react-refresh": "^0.4.7",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.1.6",
-    "vite": "^5.3.4"
+    "vite": "^8.0.3"
   }
 }

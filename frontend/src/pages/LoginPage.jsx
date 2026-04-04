@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Input from "../components/Input";
 import { useAuthStore } from "../store/authStore";
 import { PuffLoader } from "react-spinners";
+import OAuth from "../components/OAuth";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -62,13 +63,16 @@ const LoginPage = () => {
             type="submit"
             disabled={isLoading}
           >
-            {isLoading ? (
-              <PuffLoader size={25} />
-            ) : (
-              "Login"
-            )}
+            {isLoading ? <PuffLoader size={25} /> : "Login"}
           </motion.button>
         </form>
+        <div className="flex items-center gap-2 py-5">
+          <hr className="border-t-2 border-gray-400 flex-1" />
+          <span className="text-gray-500">or</span>
+          <hr className="border-t-2 border-gray-400 flex-1" />
+        </div>
+
+        <OAuth />
       </div>
       <div className="px-8 py-4 bg-gray-900 bg-opacity-50 flex justify-center">
         <p className="text-sm text-gray-400">

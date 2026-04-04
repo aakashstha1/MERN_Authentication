@@ -14,7 +14,7 @@ const SignUpPage = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const { signup, isLoading } = useAuthStore();
+  const { signup, isLoading, isOAuthLoading } = useAuthStore();
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -71,7 +71,7 @@ const SignUpPage = () => {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             type="submit"
-            disabled={isLoading}
+            disabled={isLoading || isOAuthLoading}
           >
             {isLoading ? <PuffLoader size={25} /> : "Sign Up"}
           </motion.button>

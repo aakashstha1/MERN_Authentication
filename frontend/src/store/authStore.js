@@ -18,6 +18,7 @@ export const useAuthStore = create((set) => ({
   isAuthenticated: false,
   error: null,
   isLoading: false,
+  isOAuthLoading: false,
   isCheckingAuth: true,
   message: null,
 
@@ -62,6 +63,25 @@ export const useAuthStore = create((set) => ({
     } catch (error) {
       const msg = handleError(error, "Error signing up");
       set({ error: msg, isLoading: false });
+      toast.error(msg);
+      throw error;
+    }
+  },
+
+  // ---------------------------------------------------- OAuth -----------------------------------------------
+  googleAuth: async (token) => {
+    set({ isOAuthLoading: true, error: null });
+    try {
+      const { data } = await api.post("/OAuth", { token });
+      set({
+        user: data.user,
+        isAuthenticated: true,
+        isOAuthLoading: false,
+      });
+      toast.success("Logged in successfully");
+    } catch (error) {
+      const msg = handleError(error, "Error verification");
+      set({ error: msg, isOAuthLoading: false });
       toast.error(msg);
       throw error;
     }
