@@ -12,6 +12,7 @@ const OAuth = () => {
         await googleAuth(res.credential);
       }}
       onError={() => console.log("Login Failed")}
+      text="continue with"
     />
   );
 };

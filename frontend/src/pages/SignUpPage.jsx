@@ -43,6 +43,7 @@ const SignUpPage = () => {
       style={{
         maxWidth: "28rem",
         width: "100%",
+        minWidth: 0,
         background: "rgba(255, 255, 255, 0.07)",
         backdropFilter: "blur(24px)",
         WebkitBackdropFilter: "blur(24px)",
@@ -53,11 +54,15 @@ const SignUpPage = () => {
         overflow: "hidden",
       }}
     >
-      <div style={{ padding: "2.5rem 2rem" }}>
+      <div
+        style={{
+          padding: "clamp(1.25rem, 5vw, 2.5rem) clamp(1rem, 4vw, 2rem)",
+        }}
+      >
         <h2
           style={{
-            fontSize: "1.8rem",
-            fontWeight: 600,
+            fontSize: "clamp(1.4rem, 5vw, 1.8rem)",
+            fontWeight: 700,
             textAlign: "center",
             marginBottom: "1.75rem",
             background: "linear-gradient(135deg, #e8b4f8, #f472b6, #a78bfa)",
@@ -163,12 +168,12 @@ const SignUpPage = () => {
           justifyContent: "center",
         }}
       >
-        <p style={{ fontSize: "14px", color: "rgba(210, 170, 255, 0.7)" }}>
+        <p style={{ fontSize: "14px", color: "rgba(240, 190, 255, 1)" }}>
           Already have an account?{" "}
           <Link
             to="/login"
             style={{
-              color: "rgba(230, 160, 255, 0.95)",
+              color: "white",
               textDecoration: "none",
               fontWeight: 500,
             }}

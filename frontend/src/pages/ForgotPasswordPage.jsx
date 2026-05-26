@@ -26,6 +26,7 @@ const ForgotPasswordPage = () => {
       style={{
         maxWidth: "28rem",
         width: "100%",
+        minWidth: 0,
         background: "rgba(255, 255, 255, 0.07)",
         backdropFilter: "blur(24px)",
         WebkitBackdropFilter: "blur(24px)",
@@ -36,11 +37,15 @@ const ForgotPasswordPage = () => {
         overflow: "hidden",
       }}
     >
-      <div style={{ padding: "2.5rem 2rem" }}>
+      <div
+        style={{
+          padding: "clamp(1.25rem, 5vw, 2.5rem) clamp(1rem, 4vw, 2rem)",
+        }}
+      >
         <h2
           style={{
-            fontSize: "1.8rem",
-            fontWeight: 600,
+            fontSize: "clamp(1.4rem, 5vw, 1.8rem)",
+            fontWeight: 700,
             textAlign: "center",
             marginBottom: "1.75rem",
             background: "linear-gradient(135deg, #e8b4f8, #f472b6, #a78bfa)",

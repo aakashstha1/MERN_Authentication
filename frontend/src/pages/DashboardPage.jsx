@@ -17,6 +17,7 @@ const DashboardPage = () => {
       style={{
         maxWidth: "28rem",
         width: "100%",
+        minWidth: 0,
         background: "rgba(255, 255, 255, 0.07)",
         backdropFilter: "blur(24px)",
         WebkitBackdropFilter: "blur(24px)",
@@ -27,10 +28,14 @@ const DashboardPage = () => {
         overflow: "hidden",
       }}
     >
-      <div style={{ padding: "2.5rem 2rem" }}>
+      <div
+        style={{
+          padding: "clamp(1.25rem, 5vw, 2.5rem) clamp(1rem, 4vw, 2rem)",
+        }}
+      >
         <h2
           style={{
-            fontSize: "1.8rem",
+            fontSize: "clamp(1.4rem, 5vw, 1.8rem)",
             fontWeight: 600,
             textAlign: "center",
             marginBottom: "1.75rem",
@@ -59,7 +64,7 @@ const DashboardPage = () => {
             <h3
               style={{
                 fontSize: "1.1rem",
-                fontWeight: 600,
+                fontWeight: 700,
                 marginBottom: "0.75rem",
                 background: "linear-gradient(135deg, #e8b4f8, #a78bfa)",
                 WebkitBackgroundClip: "text",
@@ -74,6 +79,7 @@ const DashboardPage = () => {
                 color: "rgba(220, 190, 255, 0.85)",
                 fontSize: "14px",
                 marginBottom: "4px",
+                wordBreak: "break-word",
               }}
             >
               <span
@@ -83,7 +89,13 @@ const DashboardPage = () => {
               </span>
               {user.name}
             </p>
-            <p style={{ color: "rgba(220, 190, 255, 0.85)", fontSize: "14px" }}>
+            <p
+              style={{
+                color: "rgba(220, 190, 255, 0.85)",
+                fontSize: "14px",
+                wordBreak: "break-word",
+              }}
+            >
               <span
                 style={{ color: "rgba(200, 150, 255, 0.6)", fontWeight: 600 }}
               >
@@ -122,6 +134,7 @@ const DashboardPage = () => {
                 color: "rgba(220, 190, 255, 0.85)",
                 fontSize: "14px",
                 marginBottom: "4px",
+                wordBreak: "break-word",
               }}
             >
               <span
@@ -135,7 +148,13 @@ const DashboardPage = () => {
                 day: "numeric",
               })}
             </p>
-            <p style={{ color: "rgba(220, 190, 255, 0.85)", fontSize: "14px" }}>
+            <p
+              style={{
+                color: "rgba(220, 190, 255, 0.85)",
+                fontSize: "14px",
+                wordBreak: "break-word",
+              }}
+            >
               <span
                 style={{ color: "rgba(200, 150, 255, 0.6)", fontWeight: 600 }}
               >
