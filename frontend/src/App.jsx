@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import FloatingShape from "./components/FloatingShape";
+// import FloatingShape from "./components/FloatingShape";
 
 import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
@@ -28,6 +28,20 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
+const UnverifiedRoute = ({ children }) => {
+  const { isAuthenticated, user } = useAuthStore();
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (user.isVerified) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+};
+
 // redirect authenticated users to the home page
 const RedirectAuthenticatedUser = ({ children }) => {
   const { isAuthenticated, user } = useAuthStore();
@@ -46,14 +60,15 @@ function App() {
     checkAuth();
   }, [checkAuth]);
 
-  if (isCheckingAuth) return <PuffLoader size={25} />;
+  if (isCheckingAuth) return <PuffLoader size={25} color="#fff" />;
 
   return (
-    <div
-      className="min-h-screen bg-gradient-to-br
-    from-gray-900 via-sky-800 to-blue-900 flex items-center justify-center relative overflow-hidden"
-    >
-      <FloatingShape
+    // <div
+    //   className="min-h-screen bg-gradient-to-br
+    // from-gray-900 via-sky-800 to-blue-900 flex items-center justify-center relative overflow-hidden"
+    // >
+    <div className="min-h-screen bg-[url('./bg.png')] bg-cover bg-center flex items-center justify-center relative overflow-hidden">
+      {/* <FloatingShape
         color="bg-sky-500"
         size="w-64 h-64"
         top="-5%"
@@ -80,7 +95,7 @@ function App() {
         top="40%"
         left="-10%"
         delay={2}
-      />
+      /> */}
 
       <Routes>
         <Route
@@ -107,7 +122,14 @@ function App() {
             </RedirectAuthenticatedUser>
           }
         />
-        <Route path="/verify-email" element={<EmailVerificationPage />} />
+        <Route
+          path="/verify-email"
+          element={
+            <UnverifiedRoute>
+              <EmailVerificationPage />
+            </UnverifiedRoute>
+          }
+        />
         <Route
           path="/forgot-password"
           element={

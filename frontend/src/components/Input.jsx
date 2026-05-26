@@ -1,14 +1,48 @@
 const Input = ({ icon: Icon, ...props }) => {
-	return (
-		<div className='relative mb-6'>
-			<div className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
-				<Icon className='size-5 text-blue-500' />
-			</div>
-			<input
-				{...props}
-				className='w-full pl-10 pr-3 py-2 bg-gray-800 bg-opacity-50 rounded-lg border border-gray-700 focus:border-green-500 focus:ring-2 focus:ring-green-500 text-white placeholder-gray-400 transition duration-200'
-			/>
-		</div>
-	);
+  return (
+    <div style={{ position: "relative", marginBottom: "1rem" }}>
+      <div
+        style={{
+          position: "absolute",
+          inset: "0 auto 0 0",
+          display: "flex",
+          alignItems: "center",
+          paddingLeft: "14px",
+          pointerEvents: "none",
+        }}
+      >
+        <Icon size={18} style={{ color: "rgba(220, 170, 255, 0.7)" }} />
+      </div>
+      <input
+        {...props}
+        style={{
+          width: "100%",
+          paddingLeft: "2.8rem",
+          paddingRight: "1rem",
+          paddingTop: "0.8rem",
+          paddingBottom: "0.8rem",
+          background: "rgba(255, 255, 255, 0.08)",
+          border: "1px solid rgba(200, 150, 255, 0.25)",
+          borderRadius: "12px",
+          color: "#f0e6ff",
+          fontSize: "15px",
+          fontFamily: "inherit",
+          outline: "none",
+          transition: "border-color 0.2s, background 0.2s",
+        }}
+        onFocus={(e) => {
+          e.target.style.borderColor = "rgba(200, 130, 255, 0.6)";
+          e.target.style.background = "rgba(255, 255, 255, 0.13)";
+          props.onFocus?.(e);
+        }}
+        onBlur={(e) => {
+          e.target.style.borderColor = "rgba(200, 150, 255, 0.25)";
+          e.target.style.background = "rgba(255, 255, 255, 0.08)";
+          props.onBlur?.(e);
+        }}
+      />
+    </div>
+  );
 };
+
 export default Input;

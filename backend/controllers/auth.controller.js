@@ -1,13 +1,15 @@
 import bcryptjs from "bcryptjs";
 import { generateTokenAndSetCookie } from "../utils/generateTokenAndSetCookie.js";
+import crypto from "crypto";
+import { User } from "../models/user.model.js";
+import { validatePassword } from "../utils/passwordValidator.js";
+import { OAuth2Client } from "google-auth-library";
 import {
   sendPasswordResetEmail,
   sendResetSuccessEmail,
   sendVerificationEmail,
-} from "../mailtrap/emails.js";
-import { User } from "../models/user.model.js";
-import { validatePassword } from "../utils/passwordValidator.js";
-import { OAuth2Client } from "google-auth-library";
+  sendWelcomeEmail,
+} from "../mail/nodemailer/Nemail.js";
 
 // ---------------------------------------------------------- Signup -----------------------------------------------
 export const signup = async (req, res) => {
@@ -34,9 +36,11 @@ export const signup = async (req, res) => {
     }
 
     const hashedPassword = await bcryptjs.hash(password, 10);
-    const verificationToken = Math.floor(
-      100000 + Math.random() * 900000,
-    ).toString();
+    // const verificationToken = Math.floor(
+    //   100000 + Math.random() * 900000,
+    // ).toString();
+
+  const verificationToken = crypto.randomInt(100000, 1000000).toString();
 
     const user = new User({
       email,
@@ -87,7 +91,7 @@ export const verifyEmail = async (req, res) => {
     user.verificationTokenExpiresAt = undefined;
     await user.save();
 
-    // await sendWelcomeEmail(user.email, user.name);
+    await sendWelcomeEmail(user.email, user.name);
 
     res.status(200).json({
       success: true,
@@ -243,6 +247,7 @@ export const checkAuth = async (req, res) => {
   }
 };
 
+// --------------------------------------------------------- Google Auth -----------------------------------------------
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 export const googleAuth = async (req, res) => {

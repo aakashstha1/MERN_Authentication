@@ -38,7 +38,7 @@ export const useAuthStore = create((set) => ({
         isLoading: false,
       });
 
-      toast.success("Logged in successfully");
+      toast.success(data?.message || "Logged in successfully");
     } catch (error) {
       const msg = handleError(error, "Error logging in");
       set({ error: msg, isLoading: false });
@@ -121,11 +121,12 @@ export const useAuthStore = create((set) => ({
         isAuthenticated: true,
         isLoading: false,
       });
-
+      toast.success(data?.message || "Email verified successfully");
       return data;
     } catch (error) {
       const msg = handleError(error, "Error verifying email");
       set({ error: msg, isLoading: false });
+      toast.error(msg);
       throw error;
     }
   },
