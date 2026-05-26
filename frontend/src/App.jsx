@@ -72,7 +72,7 @@ function App() {
     //   className="min-h-screen bg-gradient-to-br
     // from-gray-900 via-sky-800 to-blue-900 flex items-center justify-center relative overflow-hidden"
     // >
-    <div className="min-h-screen bg-[url('./bg.png')] bg-cover bg-center flex items-center justify-center relative overflow-hidden p-10">
+    <div className="min-h-screen bg-[url('./bg.png')] bg-cover bg-center flex items-center justify-center relative overflow-hidden px-8">
       {/* <FloatingShape
         color="bg-sky-500"
         size="w-64 h-64"
@@ -156,24 +156,6 @@ function App() {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <Toaster />
-      <footer
-        style={{
-          position: "absolute",
-          bottom: "0",
-          textAlign: "center",
-          padding: "0.5rem",
-          width: "100%",
-          color: "white",
-          background: "rgba(255, 255, 255, 0.07)",
-          backdropFilter: "blur(24px)",
-          WebkitBackdropFilter: "blur(24px)",
-          boxShadow:
-            "0 8px 48px rgba(120, 60, 180, 0.35), inset 0 1px 0 rgba(255,255,255,0.15)",
-          overflow: "hidden",
-        }}
-      >
-        Designed by Aakash Shrestha
-      </footer>
     </div>
   );
 }
